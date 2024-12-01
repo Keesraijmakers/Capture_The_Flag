@@ -1,19 +1,18 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-  %}
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
   <h1 align="center">Challenge</h1>
-  <ul class="list-group list-group-flush" id="Challenges" >
+  <ul class="list-group list-group-flush" id="challenges" > 
     {% for challenge in challenges %}
-      {% if challenge.ChallengesId == challenge_id %}
-      <li class="list-group-item">
-        {{ challenge.ChallengeNumber }}
-        <br>
-        {{ challenge.ChallengeName }}
-        <br>
-        {{ challenge.ChallengeWorth }}
-        <br>
-        <button type="submit" class="btn btn-primary">Start</button>
-      </li>
+      {% if challenge.ChallengesId == challengeid %}
+        <li class="list-group-item">
+          Welkom bij {{ challenge.ChallengeNumber }}
+          <br>
+          In {{ challenge.ChallengeName }} challenge ga je aan de slag met x
+          <br>
+          Deze chalklenge leverd {{ challenge.ChallengeWorth }} punten op.
+          <br>
+          <button type="submit" class="btn btn-primary">Start challenge</button>
+        </li>
       {% endif %}
     {% endfor %}
   </ul>
-  {% endblock %}
+{% endblock %}
