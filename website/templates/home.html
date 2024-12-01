@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+  %}
+  <h1 align="center">Challenges</h1>
+  <ul class="list-group list-group-flush" id="Challenges" >
+    {% for challenge in challenges%}
+    <li class="list-group-item" type="button" onclick="window.location.href='/challenge/{{ challenge.ChallengesId }}'">
+      {{ challenge.ChallengeNumber + " " + challenge.ChallengeName}}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endblock %}

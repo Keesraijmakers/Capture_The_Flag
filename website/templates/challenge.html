@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+  %}
+  <h1 align="center">Challenge</h1>
+  <ul class="list-group list-group-flush" id="Challenges" >
+    {% for challenge in challenges %}
+      {% if challenge.ChallengesId == challenge_id %}
+      <li class="list-group-item">
+        {{ challenge.ChallengeNumber }}
+        <br>
+        {{ challenge.ChallengeName }}
+        <br>
+        {{ challenge.ChallengeWorth }}
+        <br>
+        <button type="submit" class="btn btn-primary">Start</button>
+      </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+  {% endblock %}
