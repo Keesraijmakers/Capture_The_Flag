@@ -8,9 +8,11 @@
           <br>
           In {{ challenge.ChallengeName }} challenge ga je aan de slag met x
           <br>
-          Deze challenge leverd {{ challenge.ChallengeWorth }} punten op.
+          Deze challenge levert {{ challenge.ChallengeWorth }} punten op.
           <br>
-          <button type="submit" class="btn btn-primary">Start challenge</button>
+          <form method="POST">
+            <A target="_blank" href="{{ address }}">start challenge</A>
+          </form>
         </li>
       {% endif %}
     {% endfor %}
