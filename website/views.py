@@ -1,8 +1,9 @@
 #importing libraries
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
 from .models import challenges, studentpoints, student
 from .functions import get_username, get_nodes, get_pods, create_pod, delete_pods, label_pod, expose_pod, delete_service, get_address
+from . import db
 import time
 
 #routing
@@ -29,15 +30,23 @@ def challenge(id):
     if request.method  == 'GET':
         Challenges = challenges.query.all()
         username = get_username(current_user)
-        get_pods(username)
-        delete_service(username)
-        delete_pods(username)
-        get_pods(username)
         create_pod(username)
-        get_pods(username)
         time.sleep(10)
-        get_pods(username)
         label_pod(username)
         expose_pod(username)
         address = get_address(username)
         return render_template("challenge.html", user=current_user, challengeid=int(id), challenges=Challenges, address=address)
+
+    if request.method  == 'POST':
+        Challenges = challenges.query.all()
+        username = get_username(current_user)
+        address = get_address(username)
+        Attempt_Hidden_flag = request.form.get('hidden_flag')
+        DB_hidden_flag = db.session.execute(db.select(challenges.ChallengeFlag).filter_by(ChallengesId=int(id))).scalar_one()
+        if str(Attempt_Hidden_flag) == str(DB_hidden_flag):
+            flash('You found the hidden flag, well done', category='success')
+            delete_service(username)
+            delete_pods(username)
+        else:
+            flash('Wrong hidden flag, please try again.', category='error')
+        return render_template("challenge.html", user=current_user, challengeid=int(id), challenges=Challenges)

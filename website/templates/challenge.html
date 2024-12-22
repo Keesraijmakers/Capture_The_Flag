@@ -10,8 +10,22 @@
           <br>
           Deze challenge levert {{ challenge.ChallengeWorth }} punten op.
           <br>
+          <br>
+          <A target="_blank" href="{{ address }}">start challenge</A>
+          <br>
+          <br>
           <form method="POST">
-            <A target="_blank" href="{{ address }}">start challenge</A>
+            <label for="hidden_flag">Hidden flag</label>
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="hidden_flag"
+                name="hidden_flag"
+                placeholder="Enter hidden flag"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </li>
       {% endif %}
