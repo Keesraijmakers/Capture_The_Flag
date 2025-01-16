@@ -7,4 +7,4 @@ website = create_website()
 #initiating
 if __name__ == '__main__':
     #run instance of website
-    website.run(debug=True)
+    website.run(host="192.168.2.40",port=8080,debug=True)

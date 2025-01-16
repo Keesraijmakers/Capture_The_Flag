@@ -2,11 +2,13 @@
   <h1 align="center">Challenge</h1>
   <ul class="list-group list-group-flush" id="challenges" > 
     {% for challenge in challenges %}
-      {% if challenge.ChallengesId == challengeid %}
+      {% if challenge.Challengenumber == Challengenumber %}
         <li class="list-group-item">
-          Welkom bij {{ challenge.ChallengeNumber }}
+          Welkom bij {{ challenge.ChallengeName }}
           <br>
-          In {{ challenge.ChallengeName }} challenge ga je aan de slag met x
+          hier moet nog uitleg komen
+          <br>
+          Gebruik ssh om op de challenge in te loggen, de username is root en password is root_password
           <br>
           Deze challenge levert {{ challenge.ChallengeWorth }} punten op.
           <br>

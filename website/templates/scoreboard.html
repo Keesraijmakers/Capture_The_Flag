@@ -1,15 +1,11 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
   <h1 align="center">Scoreboard</h1>
   <ul class="list-group list-group-flush" id="scoreboard" >
-  <div> total points </div> 
-    {% for student in students %}
-      {% for scoreboard in scoreboards %}
-        {% if scoreboard.StudentNumber == student.StudentNumber %}
-        <li class="list-group-item">
-          {{ scoreboard.StudentName }} heeft {{ scoreboard.TotalScore }} punten
-        </li>
-        {% endif %}
-      {% endfor %}
+  <div>High scores</div> 
+    {% for studentpoint in studentpoints %}
+      <li class="list-group-item">
+        {{ studentpoint.StudentName }} heeft {{ studentpoint.TotalPoints }} punten
+      </li>
     {% endfor %}
   </ul>
 {% endblock %}

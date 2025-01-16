@@ -8,7 +8,7 @@ from kubernetes import config
 
 #constants
 db = SQLAlchemy()
-DB_NAME = "ctfdatabase"
+DB_NAME = "ctfdatabasev2"
 DB_USER = "administrator"
 DB_PASSWD = "Welkom!01"
 DB_IP = "192.168.2.4"
@@ -29,7 +29,7 @@ def create_website():
     #imports
     from .views import views
     from .auth import auth
-    from .models import student, challenges, studentpoints
+    from .models import student, challenges, studentpoints, student_challenges
     #routing
     website.register_blueprint(views, url_prefix='/')
     website.register_blueprint(auth, url_prefix='/')
@@ -42,7 +42,7 @@ def create_website():
     login_manager.init_app(website)
 
     @login_manager.user_loader
-    def load_user(id):
-        return student.query.get(int(id))
+    def load_user(StudentNumber):
+        return student.query.get(int(StudentNumber))
 
     return website

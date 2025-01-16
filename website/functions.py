@@ -1,46 +1,54 @@
 #importing libraries
 from kubernetes import client
-from kubernetes.client.rest import ApiException
 import subprocess
 
+#variable for if the button is pressed
+pressed_button_state = False
 
-#function to create a string username from the login manager username tag
+#function to get the button state value which is True or False depending on if the button is already pressed
+def get_button_state():
+    return pressed_button_state
+
+#function to set the button state value to True or False depending if it is pressed
+def set_button_state(bool):
+    pressed_button_state = bool
+    return pressed_button_state
+
+#function to create a username string from the login manager user
 def get_username(user):
     username = str(user).replace("<","")
     username = username.replace(">","")
     username = username.replace(" ","")
     return username
 
+#function to create the studentnumber string from the login manager user
+def get_studentnumber(user):
+    studentnumber = str(user).replace("<student ","")
+    studentnumber = studentnumber.replace(">","")
+    return studentnumber
 
-#function to get the kubernetes nodes with the help of the command line
-def get_nodes():
-    subprocess.run(['kubectl', 'get', 'nodes'])
+#function to delete a namespace from the kubernetes cluster with the help of the command line
+def delete_namespace(name):
+    subprocess.run(['kubectl', 'delete', 'namespace', name])
 
+#function to label a kubernetes pod in the kubernetes cluster with the help of the command line
+def label_pod(name):
+    subprocess.run(['kubectl', 'label', 'pod', name,'-n', name ,'app=capture-the-flag-1'])
 
-#function to get the kubernetes pods with the help of the command line
-def get_pods(name):
-    subprocess.run(['kubectl', 'get', 'pods', '-n', name])
+#function to expose a kubernetes pod in the kubernetes cluster with the help of the command line
+def expose_pod(name):
+    subprocess.run(['kubectl', 'expose', 'pod', name, '-n', name, '--type=NodePort', '--port', '31139', '--target-port=22'])
 
-
-#function to delete a kubernetes node with the help of the command line
-def delete_pods(name):
-    subprocess.run(['kubectl', 'delete', 'pod' ,name, '-n', name])
-
-
-#function to delete a kubernetes service with the help of the command line
-def delete_service(name):
-    subprocess.run(['kubectl', 'delete', 'service', '-n', name, name])
-
-
-#function to create a kubernetes pod with the help of the command line
-def create_pod(name):
+#function to create a kubernetes namespace and pod in the kubernetes cluster with the help of the command line
+def create_pod(name,id):
     #create an api instance from the library
     api_instance = client.CoreV1Api()
+
     #create a kubernetes container template
     container     = client.V1Container(
-        name      = "ctf-challenge1",
-        image     = "ghcr.io/forwardit332/ctf-challenge1:1.0",
-        ports     = [client.V1ContainerPort(container_port=80)]
+        name      = str("ctf-challenge" + id),
+        image     = str("ghcr.io/forwardit332/ctf-challenge" + id + ":latest"),
+        ports     = [client.V1ContainerPort(container_port=22)]
     )
     #initialize container accordint to the library with the template
     pod_spec = client.V1PodSpec(containers=[container])
@@ -53,16 +61,10 @@ def create_pod(name):
         metadata=metadata,
         spec=pod_spec
     )
+    #create a namespace for the user
+    api_instance.create_namespace(body=client.V1Namespace(metadata=client.V1ObjectMeta(name=name)))
     #create the the pod on the kubernetes service
     api_instance.create_namespaced_pod(body=pod, namespace=name)
-
-#function to label a kubernetes pod with the help of the command line
-def label_pod(name):
-    subprocess.run(['kubectl', 'label', 'pod', '-n', name, name ,'app=capture-the-flag-1'])
-
-#function to expose a kubernetes pod with the help of the command line
-def expose_pod(name):
-    subprocess.run(['kubectl', 'expose', 'pod', '-n', name, name, '--type=NodePort', '--port', '31139', '--target-port=80'])
 
 #function to create an access url string of the kubernetes pod with the help of the command line
 def get_address(name):
@@ -84,6 +86,6 @@ def get_address(name):
     for port in service.spec.ports:
         pod_port = str(port.node_port)
 
-    #formating the ip and port into an access string
-    return str( "http://" + pod_ip + ":" + pod_port + "/")
+    #formating the ip and port into an access string and also giving the adress of the shellinabox web terminal
+    return str( "http://192.168.2.40:5000/" + pod_ip + ":" + pod_port + "/")
 

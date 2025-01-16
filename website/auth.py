@@ -1,6 +1,6 @@
 #importing libraries
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import student
+from .models import student, studentpoints
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -46,19 +46,19 @@ def logout():
 def sign_up():
     #create user function
     if request.method == 'POST':
-        username = request.form.get('username')
-        first_name = request.form.get('firstName')
-        studentnumber = request.form.get('studentnumber')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
+        username = request.form.get('Username')
+        name = request.form.get('Name')
+        studentnumber = request.form.get('StudentNumber')
+        password1 = request.form.get('Password1')
+        password2 = request.form.get('Password2')
 
-        user = student.query.filter_by(StudentUsername=username).first()
+        user = student.query.filter_by(StudentNumber=studentnumber).first()
         if user:
-            flash('Username already exists.', category='error')
+            flash('Studentnumber already exists.', category='error')
         elif len(username) < 4:
             flash('Username must be greater than 3 characters.', category='error')
-        elif len(first_name) < 2:
-            flash('First name must be greater than 1 character.', category='error')
+        elif len(name) < 1:
+            flash('Fill in name.', category='error')
         elif len(studentnumber) < 1:
             flash('Fill in studentnumber', category='error')
         elif password1 != password2:
@@ -66,7 +66,7 @@ def sign_up():
         elif len(password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
         else:
-            new_user = student(StudentUsername=username, StudentName=first_name, StudentNumber=studentnumber, StudentPassword=generate_password_hash(
+            new_user = student(StudentNumber=studentnumber, StudentUsername=username, StudentName=name, StudentPassword=generate_password_hash(
                 password1, method='scrypt', salt_length=16))
             db.session.add(new_user)
             db.session.commit()
