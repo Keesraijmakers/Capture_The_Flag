@@ -4,13 +4,17 @@
     {% for challenge in challenges %}
       {% if challenge.Challengenumber == Challengenumber %}
         <li class="list-group-item">
-          Welkom bij {{ challenge.ChallengeName }}
+          Welkom bij {{ challenge.ChallengeName }} challenge
           <br>
-          hier moet nog uitleg komen
           <br>
-          Gebruik ssh om op de challenge in te loggen, de username is root en password is root_password
+          {{ challenge.ChallengeDescription }}
           <br>
           Deze challenge levert {{ challenge.ChallengeWorth }} punten op.
+          <br>
+          <br>
+          Gebruik de username : forwardit en password : capturetheflag om in te loggen.
+          <br>
+          Ssh dan naar : {{ challenge_address }} met poort : {{ challenge_port }}, gebruik dezelfde inlog gegevens.
           <br>
           <br>
           <A target="_blank" href="{{ address }}">start challenge</A>

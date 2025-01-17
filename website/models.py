@@ -20,6 +20,7 @@ class challenges(db.Model):
     ChallengeName = db.Column(db.String(45))
     ChallengeFlag = db.Column(db.String(45))
     ChallengeWorth = db.Column(db.Integer)
+    ChallengeDescription = db.Column(db.String(800))
     studentchallenges = db.relationship('student_challenges')
 
 #creating a student_challenges model for database usage

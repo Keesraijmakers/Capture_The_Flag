@@ -67,7 +67,7 @@ def create_pod(name,id):
     api_instance.create_namespaced_pod(body=pod, namespace=name)
 
 #function to create an access url string of the kubernetes pod with the help of the command line
-def get_address(name):
+def get_ip_address(name):
     #create an api instance from the library
     v1 = client.CoreV1Api()
     #variable to store the pod ip in
@@ -77,7 +77,11 @@ def get_address(name):
     #iterate through the list to get the ip of the host which is in this case only 1.
     for pod in pod_list.items:
         pod_ip = str(pod.status.host_ip)
+    return str(pod_ip)
 
+def get_port_address(name):
+    #create an api instance from the library
+    v1 = client.CoreV1Api()
     #variable to store the pod port in
     pod_port = ""
     #use the api instance to list all the services with the given namespace
@@ -85,7 +89,11 @@ def get_address(name):
     #iterate through the list to get the port of the host which is in this case only 1
     for port in service.spec.ports:
         pod_port = str(port.node_port)
+    return str(pod_port)
 
-    #formating the ip and port into an access string and also giving the adress of the shellinabox web terminal
-    return str( "http://192.168.2.40:5000/" + pod_ip + ":" + pod_port + "/")
+def connect_to_shellinabox(port):
+    #start the shellinabox web terminal and port into an http access string
+    subprocess.run(['shellinaboxd', '-t', '-b', '-p', port])
+    #formating the shellinabox web terminal and port into an http access string
+    return str( "http://192.168.2.40:" + port)
 

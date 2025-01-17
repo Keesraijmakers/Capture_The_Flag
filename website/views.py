@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
 from .models import challenges, studentpoints, student, student_challenges
-from .functions import get_username, create_pod, label_pod, expose_pod, get_address, get_studentnumber, delete_namespace, get_button_state, set_button_state
+from .functions import get_username, create_pod, label_pod, expose_pod, connect_to_shellinabox, get_studentnumber, delete_namespace, get_button_state, set_button_state, get_ip_address, get_port_address
 from . import db
 import time
 
@@ -34,8 +34,10 @@ def challenge(id):
         label_pod(username)
         expose_pod(username)
         set_button_state(False)
-        address = get_address(username)
-        return render_template("challenge.html", user=current_user, Challengenumber=int(id), challenges=Challenges, address=address)
+        challenge_address = get_ip_address(username)
+        challenge_port = get_port_address(username)
+        address = connect_to_shellinabox(challenge_port)
+        return render_template("challenge.html", user=current_user, Challengenumber=int(id), challenges=Challenges, address=address, challenge_port=challenge_port, challenge_address=challenge_address)
 
     if request.method  == 'POST':
         Challenges = challenges.query.all()
