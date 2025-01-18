@@ -2,18 +2,6 @@
 from kubernetes import client
 import subprocess
 
-#variable for if the button is pressed
-pressed_button_state = False
-
-#function to get the button state value which is True or False depending on if the button is already pressed
-def get_button_state():
-    return pressed_button_state
-
-#function to set the button state value to True or False depending if it is pressed
-def set_button_state(bool):
-    pressed_button_state = bool
-    return pressed_button_state
-
 #function to create a username string from the login manager user
 def get_username(user):
     username = str(user).replace("<","")
